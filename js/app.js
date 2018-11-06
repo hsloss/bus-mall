@@ -44,6 +44,7 @@ let randomNumber = function() {
 let firstImage
 let secondImage
 let thirdImage
+
 let totalClicks = 0
 
 let clickHandler = function(event) {
@@ -56,7 +57,12 @@ let clickHandler = function(event) {
   }
   totalClicks++
   console.log(totalClicks)
-  displayImages()
+  if(totalClicks === 20){
+    removeImages()
+    displayChart()
+  } else {
+    displayImages()
+  }
 }
 
 let removeImages = function() {
@@ -101,31 +107,6 @@ let displayImages = function () {
     elImage.setAttribute('id', randomItem._id)
     randomItem.shown++
     elImage.addEventListener('click', clickHandler)
-  }
-  while(totalClicks === 20){
-    removeImages()
-    displayChart()
-    debugger;
-  }
-}
-
-
-let displayTable = function() {
-  for(let i = 0; i < busmallItems.length; i++) {
-    let elRow = document.createElement('tr')
-    elTable.appendChild(elRow)
-    let elHeader = document.createElement('th')
-    elRow.appendChild(elHeader)
-    elHeader.innerText = busmallItems[i].title
-    let elClicks = document.createElement('td')
-    elRow.appendChild(elClicks)
-    elClicks.innerText = busmallItems[i].clicked
-    let elShown = document.createElement('td')
-    elRow.appendChild(elShown)
-    elShown.innerText = busmallItems[i].shown
-    let elPercentage = document.createElement('td')
-    elRow.appendChild(elPercentage)
-    elPercentage.innerText = (busmallItems[i].clicked / busmallItems[i].shown) * 100 + '%'
   }
 }
 
