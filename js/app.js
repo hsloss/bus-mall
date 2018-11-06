@@ -59,6 +59,10 @@ let clickHandler = function(event) {
   console.log(totalClicks)
   if(totalClicks === 20){
     removeImages()
+    clickedArrayFunc()
+    console.log(clickedArray)
+    shownArrayFunc()
+    console.log(shownArray)
     displayChart()
   } else {
     displayImages()
@@ -111,3 +115,33 @@ let displayImages = function () {
 }
 
 displayImages()
+
+let titleArray = []
+
+let titleArrayFunc = function(){
+  for(let i = 0; i < busmallItems.length; i++){
+    let objTitle = busmallItems[i].title
+    titleArray.push(objTitle)
+  }
+}
+
+titleArrayFunc()
+console.log(titleArray)
+
+let clickedArray = []
+
+let clickedArrayFunc = function(){
+  for(let i = 0; i < busmallItems.length; i++){
+    let objClicked = busmallItems[i].clicked
+    clickedArray.push(objClicked)
+  }
+}
+
+let shownArray = []
+
+let shownArrayFunc = function(){
+  for(let i = 0; i < busmallItems.length; i++){
+    let objShown = busmallItems[i].shown
+    shownArray.push(objShown)
+  }
+}
