@@ -44,29 +44,9 @@ let randomNumber = function() {
 let firstImage
 let secondImage
 let thirdImage
-
-let shuffle = function() {
-  let currentIndex = busmallItems.length, temporaryValue, randomIndex
-  // While there remain elements to shuffle...
-  while (0 !== currentIndex) {
-    // Pick a remaining element...
-    randomIndex = Math.floor(Math.random() * currentIndex)
-    currentIndex -= 1
-    // And swap it with the current element.
-    temporaryValue = busmallItems[currentIndex]
-    busmallItems[currentIndex] = busmallItems[randomIndex]
-    busmallItems[randomIndex] = temporaryValue
-  }
-  return busmallItems
-}
+let totalClicks = 0
 
 let clickHandler = function(event) {
-  // run 25 times only
-  for(let i = 0; i < 25; i++)
-  //on click, display three new images that are not equal to previous firstImage, secondImage, thirdImage
-    for(let i = 0; i < elBusmallImages.length; i++) {
-      shuffle()}
-      let clicked = 0
   if(firstImage._id === event.target.id){
     firstImage.clicked++
   } else if(secondImage._id === event.target.id){
@@ -74,8 +54,20 @@ let clickHandler = function(event) {
   } else if(thirdImage._id === event.target.id) {
     thirdImage.clicked++
   }
+  totalClicks++
+  console.log(totalClicks)
   displayImages()
 }
+
+let removeImages = function() {
+  if(totalClicks === 20){
+    elImgContainer.remove(elBusmallImages)
+  }
+}
+//remove img elements//
+//add chart elements//
+
+let compareArray = []
 
 let displayImages = function () {
   for(let i = 0; i < elBusmallImages.length; i++) {
@@ -83,44 +75,58 @@ let displayImages = function () {
     let randomItem = busmallItems[randomNumber()]
     if(i === 0) {
       firstImage = randomItem
-      console.log(firstImage.title)
+      compareArray.push(firstImage)
+      while(compareArray.includes(firstImage)){
+        randomItem = busmallItems[randomNumber()]
+        firstImage = randomItem
+      }
     } else if(i === 1) {
       secondImage = randomItem
-      while (secondImage === firstImage) {
+      compareArray.push(secondImage)
+      while (secondImage === firstImage || compareArray.includes(secondImage)) {
         randomItem = busmallItems[randomNumber()]
         secondImage = randomItem
       }
-      console.log(secondImage.title)
     } else if(i === 2) {
       thirdImage = randomItem
-      while (thirdImage === firstImage || thirdImage === secondImage) {
+      compareArray.push(thirdImage)
+      while (thirdImage === firstImage || thirdImage === secondImage || compareArray.includes(thirdImage)) {
         randomItem = busmallItems[randomNumber()]
         thirdImage = randomItem
       }
-      console.log(thirdImage.title)
+      compareArray = []
+      compareArray.push(firstImage, secondImage, thirdImage)
     }
     elImage.src = randomItem.filePath
     elImage.setAttribute('id', randomItem._id)
     randomItem.shown++
     elImage.addEventListener('click', clickHandler)
   }
+  while(totalClicks === 20){
+    removeImages()
+    displayChart()
+    debugger;
+  }
+}
+
+
+let displayTable = function() {
+  for(let i = 0; i < busmallItems.length; i++) {
+    let elRow = document.createElement('tr')
+    elTable.appendChild(elRow)
+    let elHeader = document.createElement('th')
+    elRow.appendChild(elHeader)
+    elHeader.innerText = busmallItems[i].title
+    let elClicks = document.createElement('td')
+    elRow.appendChild(elClicks)
+    elClicks.innerText = busmallItems[i].clicked
+    let elShown = document.createElement('td')
+    elRow.appendChild(elShown)
+    elShown.innerText = busmallItems[i].shown
+    let elPercentage = document.createElement('td')
+    elRow.appendChild(elPercentage)
+    elPercentage.innerText = (busmallItems[i].clicked / busmallItems[i].shown) * 100 + '%'
+  }
 }
 
 displayImages()
-
-for(let i = 0; i < busmallItems.length; i++) {
-  let elRow = document.createElement('tr')
-  elTable.appendChild(elRow)
-  let elHeader = document.createElement('th')
-  elRow.appendChild(elHeader)
-  elHeader.innerText = this.title
-  let elClicks = document.createElement('td')
-  elRow.appendChild(elClicks)
-  elClicks.innerText = this.clicked
-  let elShown = document.createElement('td')
-  elRow.appendChild(elShown)
-  elClicks.innerText = this.shown
-  let elPercentage = document.createElement('td')
-  elRow.appendChild(elPercentage)
-  elPercentage.innerText = (this.clicked / this.shown) * 100
-}
