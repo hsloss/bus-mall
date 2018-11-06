@@ -2,6 +2,7 @@
 let busmallItems = []
 let elImgContainer = document.getElementById('img-container')
 let elBusmallImages = document.getElementsByClassName('busmall-image')
+let elTable = document.getElementById('click-list')
 
 function Images (newTitle, path, id, description) {
   //properties below//
@@ -44,7 +45,28 @@ let firstImage
 let secondImage
 let thirdImage
 
+let shuffle = function() {
+  let currentIndex = busmallItems.length, temporaryValue, randomIndex
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex)
+    currentIndex -= 1
+    // And swap it with the current element.
+    temporaryValue = busmallItems[currentIndex]
+    busmallItems[currentIndex] = busmallItems[randomIndex]
+    busmallItems[randomIndex] = temporaryValue
+  }
+  return busmallItems
+}
+
 let clickHandler = function(event) {
+  // run 25 times only
+  for(let i = 0; i < 25; i++)
+  //on click, display three new images that are not equal to previous firstImage, secondImage, thirdImage
+    for(let i = 0; i < elBusmallImages.length; i++) {
+      shuffle()}
+      let clicked = 0
   if(firstImage._id === event.target.id){
     firstImage.clicked++
   } else if(secondImage._id === event.target.id){
@@ -52,7 +74,6 @@ let clickHandler = function(event) {
   } else if(thirdImage._id === event.target.id) {
     thirdImage.clicked++
   }
-  //display new image that is not equal to previous firstImage, secondImage, thirdImage
   displayImages()
 }
 
@@ -86,3 +107,20 @@ let displayImages = function () {
 }
 
 displayImages()
+
+for(let i = 0; i < busmallItems.length; i++) {
+  let elRow = document.createElement('tr')
+  elTable.appendChild(elRow)
+  let elHeader = document.createElement('th')
+  elRow.appendChild(elHeader)
+  elHeader.innerText = this.title
+  let elClicks = document.createElement('td')
+  elRow.appendChild(elClicks)
+  elClicks.innerText = this.clicked
+  let elShown = document.createElement('td')
+  elRow.appendChild(elShown)
+  elClicks.innerText = this.shown
+  let elPercentage = document.createElement('td')
+  elRow.appendChild(elPercentage)
+  elPercentage.innerText = (this.clicked / this.shown) * 100
+}
