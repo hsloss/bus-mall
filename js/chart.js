@@ -1,5 +1,34 @@
 'use strict'
 
+let titleArray = []
+
+let titleArrayFunc = function(){
+  for(let i = 0; i < busmallItems.length; i++){
+    let objTitle = busmallItems[i].title
+    titleArray.push(objTitle)
+  }
+}
+
+titleArrayFunc()
+
+let clickedArray = []
+
+let clickedArrayFunc = function(){
+  for(let i = 0; i < busmallItems.length; i++){
+    let objClicked = busmallItems[i].clicked
+    clickedArray.push(objClicked)
+  }
+}
+
+let shownArray = []
+
+let shownArrayFunc = function(){
+  for(let i = 0; i < busmallItems.length; i++){
+    let objShown = busmallItems[i].shown
+    shownArray.push(objShown)
+  }
+}
+
 let elChartContainer = document.getElementById('chart-container')
 let ctx = elChartContainer.getContext('2d')
 

@@ -2,10 +2,8 @@
 let busmallItems = []
 let elImgContainer = document.getElementById('img-container')
 let elBusmallImages = document.getElementsByClassName('busmall-image')
-let elTable = document.getElementById('click-list')
 
 function Images (newTitle, path, id, description) {
-  //properties below//
   this.title = newTitle
   this.filePath = path
   this._id = id
@@ -14,7 +12,6 @@ function Images (newTitle, path, id, description) {
   this.shown = 0
 }
 
-//instantiating new instance of our Images object//
 let Bag = new Images('R2D2 Suitcase', './assets/bag.jpg', 'bag', 'This is an image of an R2D2 suitcase.')
 let Banana = new Images('Banana Slicer', './assets/banana.jpg', 'banana', 'This is an image of a banana slicer.')
 let Bathroom = new Images('Toilet Paper Holder with iPad Dock', './assets/bathroom.jpg', 'bathroom', 'This is an image of a toilet paper holder with iPad dock.')
@@ -35,7 +32,12 @@ let USB = new Images('Lizard Tail USB Stick', './assets/usb.gif', 'usb', 'This i
 let WaterCan = new Images('Bent Water Can', './assets/water-can.jpg', 'water_can', 'This is an image of a bent water can.')
 let WineGlass = new Images('Crooked Wine Glass', './assets/wine-glass.jpg', 'wine_glass', 'This is a wine glass with a crooked glass opening.')
 
-busmallItems.push(Bag, Banana, Bathroom, Boots, Bubblegum, Breakfast, Cthulhu, Chair, DogDuck, Pen, PetSweep, Scissors, Shark, Sweep, Tauntaun, Unicorn, USB, WaterCan, WineGlass)
+if(localStorage.busmallItemsArray){
+  let parseBusmallItems = localStorage.getItem('busmallItemsArray')
+  busmallItems = JSON.parse(parseBusmallItems)
+} else {
+  busmallItems.push(Bag, Banana, Bathroom, Boots, Bubblegum, Breakfast, Cthulhu, Chair, DogDuck, Pen, PetSweep, Scissors, Shark, Sweep, Tauntaun, Unicorn, USB, WaterCan, WineGlass)
+}
 
 let randomNumber = function() {
   return Math.floor(Math.random() * busmallItems.length)
@@ -47,23 +49,32 @@ let thirdImage
 
 let totalClicks = 0
 
+if(localStorage.totalClicksCount){
+  let parseTotalClicks = localStorage.getItem('totalClicksCount')
+  totalClicks = parseInt(parseTotalClicks)
+}
+
 let clickHandler = function(event) {
   if(firstImage._id === event.target.id){
     firstImage.clicked++
+    localStorage.setItem('busmallItemsArray', JSON.stringify(busmallItems))
   } else if(secondImage._id === event.target.id){
     secondImage.clicked++
+    localStorage.setItem('busmallItemsArray', JSON.stringify(busmallItems))
   } else if(thirdImage._id === event.target.id) {
     thirdImage.clicked++
+    localStorage.setItem('busmallItemsArray', JSON.stringify(busmallItems))
   }
   totalClicks++
+  localStorage.setItem('totalClicksCount', totalClicks)
   console.log(totalClicks)
-  if(totalClicks === 20){
+  if(totalClicks >= 20){
     removeImages()
     clickedArrayFunc()
-    console.log(clickedArray)
     shownArrayFunc()
-    console.log(shownArray)
     displayChart()
+    localStorage.clear()
+    totalClicks = 0
   } else {
     displayImages()
   }
@@ -74,8 +85,6 @@ let removeImages = function() {
     elImgContainer.remove(elBusmallImages)
   }
 }
-//remove img elements//
-//add chart elements//
 
 let compareArray = []
 
@@ -115,33 +124,3 @@ let displayImages = function () {
 }
 
 displayImages()
-
-let titleArray = []
-
-let titleArrayFunc = function(){
-  for(let i = 0; i < busmallItems.length; i++){
-    let objTitle = busmallItems[i].title
-    titleArray.push(objTitle)
-  }
-}
-
-titleArrayFunc()
-console.log(titleArray)
-
-let clickedArray = []
-
-let clickedArrayFunc = function(){
-  for(let i = 0; i < busmallItems.length; i++){
-    let objClicked = busmallItems[i].clicked
-    clickedArray.push(objClicked)
-  }
-}
-
-let shownArray = []
-
-let shownArrayFunc = function(){
-  for(let i = 0; i < busmallItems.length; i++){
-    let objShown = busmallItems[i].shown
-    shownArray.push(objShown)
-  }
-}
